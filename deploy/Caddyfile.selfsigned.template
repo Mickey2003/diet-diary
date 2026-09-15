@@ -1,0 +1,13 @@
+# 自签名证书版本（浏览器会提示不安全，需手动信任；适合无法放行 80 端口的情况）
+https://__PUBLIC_IP__ {
+	tls internal
+	encode zstd gzip
+	request_body {
+		max_size 20MB
+	}
+	reverse_proxy 127.0.0.1:8000
+}
+
+http://__PUBLIC_IP__ {
+	redir https://{host}{uri} permanent
+}

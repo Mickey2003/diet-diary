@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App name -->
+    <string name="app_name">饮食日记</string>
+
+    <!-- SetupActivity -->
+    <string name="setup_title">设置服务器地址</string>
+    <string name="setup_hint">服务器地址（如 https://1.2.3.4 或 http://192.168.1.10:8000）</string>
+    <string name="setup_btn_test">测试连接</string>
+    <string name="setup_btn_save">保存并继续</string>
+    <string name="setup_testing">正在测试连接…</string>
+    <string name="setup_success">连接成功 ✓</string>
+    <string name="setup_fail">连接失败，请检查地址</string>
+    <string name="setup_url_empty">请输入服务器地址</string>
+    <string name="setup_url_invalid">地址格式无效，请使用 http:// 或 https:// 开头</string>
+
+    <!-- MainActivity menu -->
+    <string name="menu_change_server">更换服务器</string>
+    <string name="menu_clear_cache">清除缓存与登录</string>
+    <string name="menu_about">关于</string>
+    <string name="menu_check_notifications">立即检查通知</string>
+    <string name="menu_notification_help">通知设置帮助</string>
+
+    <!-- SSL dialog -->
+    <string name="ssl_dialog_title">证书不受信任</string>
+    <string name="ssl_dialog_message">证书不受信任，是否继续？（仅建议在自己的服务器上使用）</string>
+    <string name="ssl_continue">继续</string>
+    <string name="ssl_cancel">取消</string>
+    <string name="ssl_remember">记住此选择（本次会话）</string>
+
+    <!-- Offline page / error -->
+    <string name="offline_title">无法连接到服务器</string>
+    <string name="offline_body">请检查网络连接和服务器状态，然后重试。</string>
+    <string name="offline_retry">重试</string>
+
+    <!-- Back-to-exit toast -->
+    <string name="press_back_again">再按一次返回键退出</string>
+
+    <!-- Clear cache confirm -->
+    <string name="clear_cache_title">清除缓存与登录</string>
+    <string name="clear_cache_message">这将清除所有本地缓存和登录状态，您需要重新登录。是否继续？</string>
+    <string name="clear_cache_ok">清除</string>
+    <string name="clear_cache_cancel">取消</string>
+
+    <!-- About dialog -->
+    <string name="about_title">关于 饮食日记</string>
+    <string name="about_message">版本：%1$s\n\n所有功能都运行在您的服务器上，应用只是一个轻量外壳。\n\n服务器：%2$s</string>
+    <string name="about_ok">好的</string>
+
+    <!-- Notification channel -->
+    <string name="notif_channel_name">饮食日记通知</string>
+    <string name="notif_channel_desc">来自饮食日记服务器的消息通知</string>
+
+    <!-- Notification permission rationale -->
+    <string name="notif_permission_title">启用通知</string>
+    <string name="notif_permission_message">允许饮食日记发送通知，以便及时收到服务器消息提醒。</string>
+    <string name="notif_permission_ok">允许</string>
+    <string name="notif_permission_cancel">暂不</string>
+
+    <!-- Notification help dialog -->
+    <string name="notif_help_title">通知设置帮助</string>
+    <string name="notif_help_message">部分国产手机（小米/华为/OPPO/vivo 等）会在后台杀死应用进程，导致通知无法正常推送。\n\n请进入：设置 → 应用管理 → 饮食日记，然后：\n• 允许自启动\n• 允许后台运行\n• 电池优化 → 不限制\n\n点击下方按钮可直接跳转到应用设置。</string>
+    <string name="notif_help_open_settings">打开应用设置</string>
+    <string name="notif_help_close">关闭</string>
+
+    <!-- Share -->
+    <string name="share_chooser_title">分享</string>
+
+    <!-- File chooser -->
+    <string name="file_chooser_title">选择图片</string>
+    <string name="file_chooser_camera">拍照</string>
+    <string name="file_chooser_gallery">从相册选择</string>
+
+    <!-- Camera permission -->
+    <string name="camera_permission_title">需要相机权限</string>
+    <string name="camera_permission_message">扫描条形码需要相机权限。请在设置中授予权限。</string>
+    <string name="camera_permission_settings">打开设置</string>
+    <string name="camera_permission_cancel">取消</string>
+
+    <!-- Scan barcode -->
+    <string name="scan_barcode_prompt">将条形码对准取景框</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_app_logo">饮食日记图标</string>
+    <string name="cd_progress">加载中</string>
+
+    <!-- MainActivity menu -->
+    <string name="menu_refresh">刷新</string>
+
+    <!-- Download toast -->
+    <string name="toast_download_started">已开始下载</string>
+    <string name="toast_image_saved">已保存到相册</string>
+    <string name="toast_save_failed">保存失败</string>
+
+    <!-- Scan torch button -->
+    <string name="scan_torch">手电筒</string>
+    <string name="scan_camera_denied">未授予相机权限，无法扫码</string>
+    <string name="toast_checking_inbox">正在检查新通知…</string>
+    <string name="menu_realtime">实时通知开/关</string>
+    <string name="toast_realtime_on">已开启实时通知（前台服务）</string>
+    <string name="toast_realtime_off">已关闭实时通知，改为每 15 分钟检查</string>
+    <string name="fg_channel_name">后台监听服务</string>
+    <string name="fg_channel_desc">保持与服务器连接以便即时收到通知；可在此静音该常驻提示</string>
+    <string name="fg_notification_title">饮食日记正在监听通知</string>
+    <string name="fg_notification_text">有新消息会立刻提醒你；长按可静音此提示</string>
+    <string name="toast_uploading_photo">正在上传照片…</string>
+    <string name="toast_photo_uploaded">照片已上传</string>
+    <string name="menu_battery">后台运行设置（电池优化）</string>
+    <string name="toast_battery_ok">已忽略电池优化，后台通知可正常工作</string>
+    <string name="battery_dialog_title">允许后台运行</string>
+    <string name="battery_dialog_message">为了在 App 不在前台时也能收到通知，请允许「饮食日记」忽略电池优化。部分手机还需在系统设置中开启自启动与后台运行。</string>
+    <string name="battery_dialog_ok">去设置</string>
+    <string name="battery_dialog_later">稍后</string>
+</resources>

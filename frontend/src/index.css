@@ -1,0 +1,200 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--dd-bg-layout, #f7f8fa);
+  color: var(--dd-text, #222);
+  padding-top: env(safe-area-inset-top);
+}
+
+@media (max-width: 768px) {
+  body {
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Hide in-page page-title on mobile (top bar shows it) */
+.is-mobile .page-title,
+.is-mobile .page-header-block {
+  display: none;
+}
+
+/* 卡片统一阴影变量由 CssVarSync 在 App.tsx 中设置 */
+/* --dd-shadow: light mode = subtle, dark = none + border */
+
+/* 卡片统一阴影 */
+.meal-card {
+  border-radius: 12px;
+  box-shadow: var(--dd-shadow, 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04));
+  background: var(--dd-bg-container, #fff);
+  margin-bottom: 12px;
+  transition: background .2s, box-shadow .2s, transform .2s;
+}
+
+/* 通用内容卡片 */
+.content-card {
+  background: var(--dd-bg-container, #fff);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--dd-shadow, 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04));
+  margin-bottom: 20px;
+  transition: background .2s, box-shadow .2s, transform .2s;
+}
+
+@media (max-width: 768px) {
+  .content-card {
+    padding: 16px;
+  }
+}
+
+/* 查询结果答案区 */
+.query-answer {
+  background: var(--dd-bg-container, #fff);
+  border: 1px solid var(--dd-border, #f0f0f0);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--dd-shadow, 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04));
+  transition: background .2s, box-shadow .2s;
+}
+
+/* 上传区域 */
+.upload-section {
+  background: var(--dd-bg-container, #fff);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--dd-shadow, 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04));
+  transition: background .2s, box-shadow .2s;
+}
+
+@media (max-width: 768px) {
+  .upload-section {
+    padding: 16px;
+  }
+}
+
+/* 日期分组标题 */
+.date-group-header {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dd-text-secondary, #555);
+  margin: 20px 0 8px;
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--dd-border, #f0f0f0);
+}
+
+/* 统计卡片行 */
+.stat-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .stat-cards-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+}
+
+/* 图表容器 */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* 设置表单 */
+.settings-form {
+  max-width: 600px;
+}
+
+/* AI 说明区块 */
+.ai-note-block {
+  background: var(--dd-fill-alter, #f9f9f9);
+  border: 1px solid var(--dd-border, #e8e8e8);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--dd-text-secondary, #666);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* 标题行 */
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--dd-text, #333);
+  margin-bottom: 20px;
+}
+
+.ant-upload-drag {
+  border-radius: 10px !important;
+}
+
+/* 登录页 */
+.login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: radial-gradient(ellipse at 30% 20%, var(--dd-primary-bg, #fff7e6) 0%, var(--dd-bg-layout, #f7f8fa) 70%);
+}
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--dd-bg-container, #fff);
+  border-radius: 16px;
+  padding: 36px 32px 28px;
+  box-shadow: var(--dd-shadow, 0 1px 2px rgba(0,0,0,.04), 0 4px 12px rgba(0,0,0,.04)),
+              0 8px 32px rgba(0,0,0,.08);
+}
+
+/* Mobile input font to prevent iOS zoom */
+@media (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Desktop meal-card hover lift */
+@media (min-width: 769px) {
+  .meal-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,.10);
+  }
+}
+
+/* Sticky save button on mobile */
+.save-btn-sticky {
+  position: fixed;
+  bottom: calc(56px + env(safe-area-inset-bottom));
+  left: 0;
+  right: 0;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: var(--dd-bg-container, #fff);
+  border-top: 1px solid var(--dd-border, #f0f0f0);
+  z-index: 150;
+}

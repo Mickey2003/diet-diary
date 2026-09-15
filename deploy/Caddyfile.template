@@ -1,0 +1,32 @@
+# 由 deploy/install.sh 生成：把 __PUBLIC_IP__ 替换为服务器公网 IP
+# Let's Encrypt 自 2026-01 起对 IP 地址签发 6 天有效期的短期证书（shortlived profile），Caddy 自动申请与续期。
+# 前提：安全组放行 80 与 443；Caddy ≥ 2.10.2。若申请失败，运行 install.sh --self-signed 改用自签名证书。
+{
+	# 可选：填写邮箱以接收证书相关通知
+	# email you@example.com
+}
+
+https://__PUBLIC_IP__ {
+	tls {
+		issuer acme {
+			profile shortlived
+			# IP 证书用 HTTP-01 验证最稳定
+			disable_tlsalpn_challenge
+		}
+	}
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+	}
+	request_body {
+		max_size 20MB
+	}
+	reverse_proxy 127.0.0.1:8000
+}
+
+http://__PUBLIC_IP__ {
+	redir https://{host}{uri} permanent
+}

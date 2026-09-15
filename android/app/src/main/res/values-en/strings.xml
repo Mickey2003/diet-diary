@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Diet Diary</string>
+
+    <string name="setup_title">Server Setup</string>
+    <string name="setup_hint">Server URL (e.g. https://1.2.3.4 or http://192.168.1.10:8000)</string>
+    <string name="setup_btn_test">Test Connection</string>
+    <string name="setup_btn_save">Save &amp; Continue</string>
+    <string name="setup_testing">Testing connection…</string>
+    <string name="setup_success">Connection successful ✓</string>
+    <string name="setup_fail">Connection failed – please check the address</string>
+    <string name="setup_url_empty">Please enter the server URL</string>
+    <string name="setup_url_invalid">Invalid URL – must start with http:// or https://</string>
+
+    <string name="menu_change_server">Change Server</string>
+    <string name="menu_clear_cache">Clear Cache &amp; Login</string>
+    <string name="menu_about">About</string>
+    <string name="menu_check_notifications">Check Notifications Now</string>
+    <string name="menu_notification_help">Notification Help</string>
+
+    <string name="ssl_dialog_title">Untrusted Certificate</string>
+    <string name="ssl_dialog_message">The server\'s certificate is not trusted. Continue anyway? (Only recommended for your own server.)</string>
+    <string name="ssl_continue">Continue</string>
+    <string name="ssl_cancel">Cancel</string>
+    <string name="ssl_remember">Remember for this session</string>
+
+    <string name="offline_title">Cannot reach server</string>
+    <string name="offline_body">Please check your network connection and server status, then retry.</string>
+    <string name="offline_retry">Retry</string>
+
+    <string name="press_back_again">Press back again to exit</string>
+
+    <string name="clear_cache_title">Clear Cache &amp; Login</string>
+    <string name="clear_cache_message">This will clear all local cache and login state. You will need to log in again. Continue?</string>
+    <string name="clear_cache_ok">Clear</string>
+    <string name="clear_cache_cancel">Cancel</string>
+
+    <string name="about_title">About Diet Diary</string>
+    <string name="about_message">Version: %1$s\n\nAll features run on your server – the app is just a thin shell.\n\nServer: %2$s</string>
+    <string name="about_ok">OK</string>
+
+    <string name="notif_channel_name">Diet Diary Notifications</string>
+    <string name="notif_channel_desc">Messages and alerts from your Diet Diary server</string>
+
+    <string name="notif_permission_title">Enable Notifications</string>
+    <string name="notif_permission_message">Allow Diet Diary to send notifications so you receive server messages promptly.</string>
+    <string name="notif_permission_ok">Allow</string>
+    <string name="notif_permission_cancel">Not now</string>
+
+    <string name="notif_help_title">Notification Setup Help</string>
+    <string name="notif_help_message">Some Android devices (Xiaomi / Huawei / OPPO / vivo etc.) aggressively kill background processes, which can prevent notifications from arriving.\n\nPlease open: Settings → Apps → Diet Diary, and:\n• Allow Auto-start\n• Allow Background activity\n• Battery optimisation → Unrestricted\n\nTap the button below to go directly to App Settings.</string>
+    <string name="notif_help_open_settings">Open App Settings</string>
+    <string name="notif_help_close">Close</string>
+
+    <string name="share_chooser_title">Share</string>
+
+    <string name="file_chooser_title">Choose image</string>
+    <string name="file_chooser_camera">Camera</string>
+    <string name="file_chooser_gallery">Gallery</string>
+
+    <string name="camera_permission_title">Camera Permission Required</string>
+    <string name="camera_permission_message">Camera access is needed to scan barcodes. Please grant permission in Settings.</string>
+    <string name="camera_permission_settings">Open Settings</string>
+    <string name="camera_permission_cancel">Cancel</string>
+
+    <string name="scan_barcode_prompt">Align the barcode within the frame</string>
+
+    <string name="cd_app_logo">Diet Diary logo</string>
+    <string name="cd_progress">Loading</string>
+
+    <string name="menu_refresh">Refresh</string>
+    <string name="toast_download_started">Download started</string>
+    <string name="scan_torch">Torch</string>
+    <string name="scan_camera_denied">Camera permission denied, cannot scan</string>
+    <string name="toast_checking_inbox">Checking for new notifications…</string>
+    <string name="menu_realtime">Real-time notifications on/off</string>
+    <string name="toast_realtime_on">Real-time notifications enabled (foreground service)</string>
+    <string name="toast_realtime_off">Real-time notifications disabled; checking every 15 minutes</string>
+    <string name="fg_channel_name">Background listener</string>
+    <string name="fg_channel_desc">Keeps a connection to the server for instant notifications; you may mute this persistent notice</string>
+    <string name="fg_notification_title">Diet Diary is listening for notifications</string>
+    <string name="fg_notification_text">You\'ll be alerted instantly; long-press to mute this notice</string>
+    <string name="toast_uploading_photo">Uploading photo…</string>
+    <string name="toast_photo_uploaded">Photo uploaded</string>
+    <string name="menu_battery">Background settings (battery optimization)</string>
+    <string name="toast_battery_ok">Battery optimization already ignored; background notifications will work</string>
+    <string name="battery_dialog_title">Allow background activity</string>
+    <string name="battery_dialog_message">To receive notifications while the app is not in the foreground, please allow Diet Diary to ignore battery optimization. Some phones also require enabling auto-start and background running in system settings.</string>
+    <string name="battery_dialog_ok">Open settings</string>
+    <string name="battery_dialog_later">Later</string>
+</resources>

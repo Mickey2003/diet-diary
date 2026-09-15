@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Simple bowl/plate silhouette for notification icon.
+  Must be monochrome white; the system applies its own tinting.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Rim band -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M2,8.5 L22,8.5 L22,10 L2,10 Z" />
+
+    <!-- Bowl body (lower half-ellipse) -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M3,10 Q3,19 12,19 Q21,19 21,10 Z" />
+
+    <!-- Base/foot -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M8,19 L16,19 L15.5,21 L8.5,21 Z" />
+
+</vector>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Permits:
+    • Cleartext HTTP (needed for LAN addresses like http://192.168.x.x:8000)
+    • User-added CAs (needed for Caddy's self-signed "tls internal" cert)
+    SSL errors on WebView are handled in code with a remember-choice dialog.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <!-- System CAs -->
+            <certificates src="system" />
+            <!-- User-installed CAs (e.g. manually installed self-signed cert) -->
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

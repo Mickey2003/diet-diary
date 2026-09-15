@@ -1,7 +1,7 @@
 # 今天吃得怎么样 · AI 饮食观察日记
 
-> 网技部 10 天 AI 全栈项目 · 选题 08 · 当前版本 **v0.3**
-> 一本“会看照片”的饮食日记：拍照识别菜品和饮食标签 → 人工确认 → 保存 → 时间线 / 图表 → 自然语言查询 → 阶段总结。
+> 网技部 10 天 AI 全栈项目 · 选题 08 · 当前版本 **v0.8.6**（App 1.3.1）
+> 一本“会看照片”的饮食日记：拍照识别菜品和饮食标签 → 人工确认 → 保存 → 时间线 / 图表 → 自然语言查询 → 阶段总结 → 健康档案与个性化餐单。
 > 它不假装是医生，也不追求精确卡路里，只帮你看清最近到底吃了什么。
 
 ## 功能一览
@@ -15,6 +15,7 @@
 | 阶段总结 | 周报 / 月报 + 分享卡片 | 程序先算事实，模型据事实写 | 正则核对数字来源 |
 | 健康档案 | 人群预设（学生 / 上班族 / 宝妈 / 长辈 / 健身 / 控重）、身高体重年龄性别、疾病用药过敏、BMI 与能量粗估、中医体质自测 | 无（程序计算 + 关键词注意事项） | 明确“非医疗建议，遵医嘱” |
 | 个性化餐单 | 结合档案、记忆与近期记录生成 1–7 天餐单；逐餐“换一换”；手动改菜与时间；购物清单；**到就餐时间播放提醒音效**（预设 / 自传音频，可提前提醒） | 模型生成，双视角说明（现代营养 + 中医体质） | 过敏原自动剔除、禁止卡路里/用药建议、注意事项由程序生成；结构完整性校验 + 同用户生成互斥 |
+| 菜品配图 | 每道菜一张缩略图；取图优先级 **本地缓存 → AI 生图 → 网络图库 → Emoji 兜底**，**永不空白**；顶部一键「用 AI 生图替换掉 emoji 图」 | 固定提示词模板批量生图（风格统一） | 生图可独立配置服务商与密钥；限流/余额不足自动停批；emoji 四级映射兜底；WebP + 200×150 缩略图 + 懒加载 |
 | AI 记忆 | 从记录 / 备注 / 档案中抽取偏好、习惯、健康、目标，注入到解释、周报、餐单提示词；可编辑关闭删除 | 模型抽取 | 去重、上限 100 条、不存敏感信息 |
 | 通知推送 | 邮件 / 企业微信 / QQ 机器人 / Server酱 / PushPlus / 腾讯云短信 / **App 系统通知**；每日提醒、每日小结、周报定时、就餐提醒；消息中心可进详情，AI 内容按 Markdown 渲染 | 周报由模型撰写 | 发送日志 |
 | 数据与集成 | JSON / CSV / ZIP（含图片）导入导出；个人访问令牌；**MCP 服务器**；App 收件箱与设备 | — | 导入去重、replace 需二次确认 |
@@ -24,6 +25,8 @@
 | Android App | WebView 薄壳：加载服务器地址，系统栏通知（轮询收件箱，无需 FCM），ZXing 扫码，原生分享；**功能更新全部在服务器端** | — | GitHub Actions 自动出 APK |
 
 模型供应商（统一 OpenAI 兼容协议）：OpenAI、阿里云通义千问、智谱 GLM、硅基流动、DeepSeek（文本）、Moonshot、Ollama、自定义 base_url；`mock` 离线模式无需密钥即可完整演示。
+
+**生图供应商独立配置**（与文本 / 识图模型解耦，可单独换服务商、单独限额）：商汤 SenseAudio（`senseaudio-image-2.0` / `doubao-seedream-5.0` / `sensenova-u1-fast`，按张计费）、任意 OpenAI 兼容的 `images/generations` 接口（DALL·E 3 / GPT-Image-1 / 自建服务）。未配置时自动退回网络图库与 emoji 兜底，功能不中断。
 
 ## 技术栈与目录
 
@@ -39,14 +42,20 @@ diet-diary/
 │   ├── main.py  config.py  db.py(迁移)  models.py  schemas.py  deps.py(登录/令牌/管理员)
 │   ├── routers/  auth users tokens meals misc(stats/query/reports) settings notify(含收件箱/设备)
 │   │             health(档案/体质/餐单) memory data(导入导出) barcode share mcp_server
-│   └── services/ auth llm_client mock_llm vision stats nl_query report tags timeutil
-│                 notify notify_channels profile meal_plan memory exporter barcode share
-├── backend/tests/            pytest（167 个用例）
-├── frontend/src/             pages: Upload Timeline Stats Query Reports Health Memory Notify Integrations AdminUsers Settings Login
+│   └── services/ auth llm_client mock_llm vision stats nl_query report tags timeutil kcal
+│                 notify notify_channels profile meal_plan memory exporter barcode share sounds
+│                 dish_image(取图编排) dish_emoji(emoji 兜底) image_client(生图客户端)
+│                 task_state(长任务忙状态) net_proxy usage
+├── backend/tests/            pytest（250 个用例，含 v0.8.6 配图专项 26 项）
+├── frontend/src/             pages: Upload Timeline Stats Query Reports Health Memory Notify
+│                             Integrations AdminUsers Settings Login MePage AccountPage Inbox
 ├── android/                  Android 壳应用（README.md / BRIDGE.md）
 ├── .github/workflows/android.yml   自动构建 APK
 ├── deploy/                   install.sh · Caddyfile 模板 · systemd
-├── docs/AI_LOG.md            AI 协作与出错记录（答辩素材，11 个案例）
+├── windows/                  宝塔 Windows 部署包与脚本
+├── docs/AI_LOG.md            AI 协作与出错记录（答辩素材，19 个案例）
+├── docs/升级指南.md           三种环境的升级 / 备份 / 回滚
+├── docs/GitHub仓库信息.md     仓库 Description / Topics / 一句话介绍（可直接粘贴）
 └── start.sh                  本地一键启动
 ```
 
@@ -66,9 +75,42 @@ bash start.sh             # 之后
 | 项 | 说明 |
 |---|---|
 | `LLM_PROVIDER` / `LLM_API_KEY` / `LLM_BASE_URL` / `LLM_TEXT_MODEL` / `LLM_FAST_MODEL` / `LLM_VISION_MODEL` | 也可在网页「模型设置」填写（仅管理员），设置页优先；密钥只存后端。**快速模型**用于查询规划、结果解释、记忆抽取、分享文案、餐单"换一换"等短任务；**文字模型**用于周报、餐单生成（质量优先）；每类任务设有输出长度上限以缩短等待 |
+| `IMAGE_PROVIDER` / `IMAGE_BASE_URL` / `IMAGE_API_KEY` / `IMAGE_MODEL` / `IMAGE_SIZE` / `IMAGE_TIMEOUT` | **菜品配图专用的生图 API**，与上面的文本 / 识图模型完全独立，可单独换服务商、单独限额。留空则不起用 AI 生图，自动退回网络图库与 emoji 兜底。一般直接在「模型设置 → 菜品配图 → 生图 API」里配更省事（支持一键「测试生图」） |
+| `DISH_AI_IMAGES` | 是否启用 AI 生图（默认关闭）。也可在「模型设置 → 菜品配图」用开关即时切换 |
+| `DISH_IMAGES_WEB` / `DISH_EMOJI_FALLBACK` | 是否允许网络图库取图 / 无图时用 emoji 兜底（默认都开启） |
 | `ADMIN_USERNAME` / `ADMIN_PASSWORD` | 首次启动的管理员 |
 | `ENABLE_SCHEDULER` | 通知定时任务开关 |
 | `TIMEZONE` | 默认 Asia/Shanghai |
+
+## 二点五、菜品配图与 AI 生图（v0.8.6）
+
+餐单里每道菜都要一张图，而中餐菜名（「小米山药粥」「清蒸鲈鱼」）在免费图库里几乎搜不到，风格也五花八门。所以这里做了一条**多级降级链**，硬约束是**永不空白**：
+
+```
+本地缓存  →  AI 生图  →  网络图库  →  Emoji 兜底
+```
+
+| 层级 | 说明 |
+|---|---|
+| 本地缓存 | 按归一化菜名做 key，命中直接复用，不重复下载 / 不重复花钱 |
+| AI 生图 | 用固定提示词模板批量生成，全站风格统一、中餐更准（需管理员开启并配置生图 API） |
+| 网络图库 | 维基百科 / 维基共享 / 百度百科 / 搜狗百科 / 360 百科，服务端下载后本地托管，不依赖用户网络直连外站 |
+| Emoji 兜底 | 精确菜名 → 关键词（长词优先）→ 类别 → 🍽 四级映射，用 Twemoji SVG 渲染保证各端风格一致，零成本、秒加载 |
+
+**怎么用**
+
+1. 「模型设置 → 菜品配图 → 生图 API」选服务商（默认商汤 SenseAudio）→ 选模型 → 选尺寸 → 填密钥 → 点「**保存生图 API**」→ 点「**测试生图**」确认能出图（会真生成一张小图，约 5–30 秒）。
+2. 打开上方的「**启用 AI 生图**」开关（切换后立即生效，不需要再点保存）。
+3. 已有餐单里仍显示 emoji 的，餐单页顶部会出现「**用 AI 生图替换掉 emoji 图**」按钮，点一次批量替换。任务期间按钮置灰，刷新页面也不会重复触发。
+
+**工程细节**
+
+- 落盘统一转 WebP（最长边 1280），另存 200×150 居中裁切缩略图到 `uploads/thumb/`；列表用缩略图、预览用原图，前端全部懒加载。
+- 生图 API 的错误码做了中文映射，并按 **fatal / transient** 分类：余额不足、密钥错误、模型不可用时**批量任务立即中断**，不会白刷请求。
+- 批量任务登记全局忙状态，重复触发返回 409，前端转轮询 —— 和生成餐单是同一套防重复点击机制。
+- 若确实不需要配图，把「启用 AI 生图」关掉即可，图库与 emoji 兜底仍在，功能不受影响。
+
+
 
 ## 三、用户与权限
 
@@ -91,6 +133,7 @@ bash start.sh             # 之后
 - 构建产物文件名带内容哈希，服务端返回 `Cache-Control: immutable`（一年），刷新时不再重复下载；`index.html` 走 `no-cache` 保证更新可见。
 - 所有 API / JS / CSS 经 gzip 压缩（Caddy 前置时还会再压一层 zstd）。
 - 上传图片自动生成 320px 缩略图，时间线列表只加载缩略图，详情才加载原图；图片缓存 7 天。
+- **菜品配图**统一转 WebP（最长边限 1280）并另存 200×150 居中裁切缩略图（`uploads/thumb/`），一屏十几张卡片全部走缩略图 + `loading="lazy"`；无图时用 emoji（Twemoji SVG）兜底，不再发起图片请求。
 - 如果仍然慢，优先检查：服务器带宽（云主机按 1–5 Mbps 计费的上行是瓶颈，可考虑把 `frontend/dist/assets` 放到对象存储/CDN）、Caddy 是否启用了 `encode zstd gzip`。
 
 ## 四点八、Windows Server + 宝塔面板部署
@@ -146,14 +189,14 @@ sudo bash deploy/install.sh --self-signed   # 无法放行 80 端口时
 ## 九、测试
 
 ```bash
-cd backend && source .venv/bin/activate && pytest -q      # 167 个用例
+cd backend && source .venv/bin/activate && pytest -q      # 250 个用例
 cd frontend && npm run build                               # 类型检查 + 打包
 ```
 另有 Playwright 无头浏览器冒烟（登录 → 12 个路由 × 浅色/深色 × 桌面/手机，控制台零错误）。
 
 ## 十、演示链路（验收）
 
-登录 → 记录一餐（拍照识别 / 扫码）→ 手动修正 → 保存 → 时间线看原始返回 → `sqlite3 backend/data/diet.db` 展示真实数据 → 统计图表 → 自然语言查询（展开查询计划与 SQL）→ 周报 + 分享卡片 → 健康档案 → 体质自测 → 生成餐单并“换一换” → AI 记忆 → 通知测试 → 用户管理 → MCP 用 curl 调一次 `tools/list` → `docs/AI_LOG.md` 讲 AI 出错案例。
+登录 → 记录一餐（拍照识别 / 扫码）→ 手动修正 → 保存 → 时间线看原始返回 → `sqlite3 backend/data/diet.db` 展示真实数据 → 统计图表 → 自然语言查询（展开查询计划与 SQL）→ 周报 + 分享卡片 → 健康档案 → 体质自测 → 生成餐单并“换一换” → **菜品配图（展示 emoji 兜底 → 一键替换为 AI 生图）** → AI 记忆 → 通知测试 → 用户管理 → MCP 用 curl 调一次 `tools/list` → `docs/AI_LOG.md` 讲 AI 出错案例。
 
 ## 十一、常见问题
 
@@ -168,6 +211,10 @@ cd frontend && npm run build                               # 类型检查 + 打�
 | App 收不到通知 | 检查手机通知权限、后台运行/自启动白名单；在「数据与集成 → App 与通知收件箱」点“发送测试到 App” |
 | 证书申请失败 | 放行 80/443，`caddy version` ≥ 2.10.2，服务器时间准确；临时用 `--self-signed` |
 | 识别与照片无关 | 当前 mock 模式，管理员到「模型设置」配置真实供应商 |
+| 餐单里的菜只有 emoji 没有图 | 这是兜底生效，不是故障。想换成 AI 图：管理员在「模型设置 → 菜品配图 → 生图 API」配好密钥并「测试生图」通过，打开「启用 AI 生图」，再到餐单页点顶部「用 AI 生图替换掉 emoji 图」 |
+| 「启用 AI 生图」开关点了又变回去 | v0.8.5 及以前的老问题（开关只改界面、要另点「保存设置」才落盘）。v0.8.6 起开关切换即时保存，若仍复现请确认账号是管理员且后端已升级 |
+| AI 生图一直失败 | 看「测试生图」的报错：`API 密钥不正确` / `余额不足` / `请求过于频繁` 都已翻译成中文。配额或鉴权类错误发生时批量任务会主动中断，不会一直重试 |
+| 生图很费钱吗 | 按张计费（SenseAudio 约 0.22–0.5 元/张）。同一道菜走缓存不会重复生成，建议先用 1024×1024 |
 
 ## 升级
 

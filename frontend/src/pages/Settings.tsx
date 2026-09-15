@@ -528,6 +528,31 @@ export default function SettingsPage({ onLoggedOut }: Props) {
     }
   }
 
+  /**
+   * 「启用 AI 生图」开关：切换后立即落盘。
+   * 不能只改本地 state —— 之前它依赖另一个卡片里的「保存设置」按钮提交，
+   * 用户切完开关刷新页面就被打回关闭状态。
+   */
+  async function handleToggleAiImages(next: boolean) {
+    const prev = dishAiImages;
+    setDishAiImages(next); // 乐观更新，开关手感跟手
+    setImageSaving(true);
+    try {
+      const updated = await updateSettings({ dish_ai_images: next });
+      setSettings(updated);
+      setDishAiImages(Boolean(updated.dish_ai_images));
+      if (next && !updated.image_ready) {
+        message.warning('AI 生图已开启，但生图 API 尚未配置完整，暂时无法生成图片');
+      } else {
+        message.success(next ? '已开启 AI 生图' : '已关闭 AI 生图');
+      }
+    } catch {
+      setDishAiImages(prev); // 失败回滚，避免界面与服务端不一致
+    } finally {
+      setImageSaving(false);
+    }
+  }
+
   function handleProviderChange(v: string) {
     setProvider(v);
     if (settings?.presets?.[v]) {
@@ -769,7 +794,8 @@ export default function SettingsPage({ onLoggedOut }: Props) {
           <Switch
             size="small"
             checked={dishAiImages}
-            onChange={setDishAiImages}
+            onChange={handleToggleAiImages}
+            loading={imageSaving}
             disabled={!canEdit}
           />
           <Text style={{ fontSize: 13 }}>启用 AI 生图</Text>

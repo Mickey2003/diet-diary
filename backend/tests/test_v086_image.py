@@ -281,3 +281,33 @@ def test_image_model_id_does_not_pollute_legacy_image_model(client, db):
     j = r.json()
     assert j["image_model_id"] == "senseaudio-image-2.0-260319"
     assert j["image_model"] == "dall-e-3"
+
+
+def test_dish_ai_images_switch_persists_alone(client, db):
+    """「启用 AI 生图」开关必须能单独落盘（不依赖其它表单字段）。
+
+    回归背景：前端开关最初只改本地 state，要靠另一个卡片的「保存设置」提交，
+    用户切完开关刷新页面就被打回关闭 —— 表现为「开关点了没用」。
+    """
+    # 只传这一个字段，模拟开关的即时保存
+    r = client.put("/api/settings", json={"dish_ai_images": True})
+    assert r.status_code == 200
+    assert r.json()["dish_ai_images"] is True
+
+    # 重新 GET（等价于前端刷新页面）仍为开启
+    assert client.get("/api/settings").json()["dish_ai_images"] is True
+
+    # 再关闭也生效
+    r = client.put("/api/settings", json={"dish_ai_images": False})
+    assert r.status_code == 200
+    assert client.get("/api/settings").json()["dish_ai_images"] is False
+
+
+def test_ai_images_enabled_reads_switch(client, db):
+    """开关落盘后 ai_images_enabled() 必须能读到。"""
+    from app.services import dish_image
+
+    client.put("/api/settings", json={"dish_ai_images": True})
+    assert dish_image.ai_images_enabled(db) is True
+    client.put("/api/settings", json={"dish_ai_images": False})
+    assert dish_image.ai_images_enabled(db) is False
